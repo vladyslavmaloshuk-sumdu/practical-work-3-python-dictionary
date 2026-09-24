@@ -40,6 +40,13 @@ def print_sorted_cars(cars):
     sorted_keys = sorted(cars.keys())
     for key in sorted_keys:
         print (key, "->", cars[key][0])
+# додано пошук
+def search_car(cars):
+    print("Пошук автомобіля за потужністю")
+    min_speed = float(input("Введіть мінімальну потужність автомобіля: "))
+    for car in cars:
+        if cars[car][0] >= min_speed:
+            print(car, "Потужність: ", cars[car][0], "к. с.", "Вартість: ", cars[car][1], "$")
 
 def calc_powerful_cars_total(cars):
     print("\n Загальна вартість авто з двигуном > 100 к.с. ")
@@ -58,7 +65,9 @@ while True:
     print("3. Видалити авто")
     print("4. Вивести відсортований список")
     print("5. Підрахувати вартість потужних авто (> 100 к.с.)")
-    print("6. Вийти")
+    # додано новий пункт до меню
+    print("6. Пошук автомобіля за потужністю")
+    print("7. Вийти")
 
     choice = input("Оберіть дію: ")
     if choice == "1":
@@ -72,6 +81,8 @@ while True:
     elif choice == "5":
         calc_powerful_cars_total(cars)
     elif choice == "6":
+        search_car(cars)
+    elif choice == "7":
         print("Роботу завершено")
         break
     else:
