@@ -12,8 +12,10 @@ cars = {
 }
 
 
+# Виведення всіх автомобілів
 def print_cars(cars):
     print("\nСписок усіх автомобілів")
+
     for car in cars:
         print(
             car,
@@ -22,7 +24,7 @@ def print_cars(cars):
         )
 
 
-# Додано захист від помилок під час введення потужності та ціни
+# Додавання нового автомобіля
 def add_cars(cars):
     print("\nДодавання авто:")
     name = input("Введіть назву авто: ")
@@ -37,22 +39,52 @@ def add_cars(cars):
             break
 
         except ValueError:
-            print("Помилка: потрібно вводити лише числа! Спробуйте ще раз.")
+            print(
+                "Помилка: потрібно вводити лише числа! "
+                "Спробуйте ще раз."
+            )
 
 
+# Видалення автомобіля
+# Додано перевірку порожнього введення,
+# очищення пробілів та пошук без урахування регістру.
 def delete_cars(cars):
     print("\nВидалення авто:")
-    name = input("Введіть назву авто для видалення: ")
 
-    try:
-        del cars[name]
-        print(f"Автомобіль {name} видалено зі словника")
-    except KeyError:
-        print(f"ПОМИЛКА: Автомобіля з назвою {name} не знайдено в базі!")
+    name = input(
+        "Введіть назву авто для видалення: "
+    ).strip()
+
+    if not name:
+        print("ПОМИЛКА: Назва авто не може бути порожньою!")
+        return
+
+    # Пошук без урахування регістру
+    matched_key = None
+
+    for car_key in cars:
+        if car_key.lower() == name.lower():
+            matched_key = car_key
+            break
+
+    if matched_key:
+        del cars[matched_key]
+
+        print(
+            f"Автомобіль '{matched_key}' "
+            "успішно знайдено та видалено зі словника."
+        )
+    else:
+        print(
+            f"ПОМИЛКА: Автомобіля з назвою "
+            f"'{name}' не знайдено в базі!"
+        )
 
 
+# Виведення автомобілів у відсортованому порядку
 def print_sorted_cars(cars):
     print("\nВідсортований список автомобілів (за алфавітом):")
+
     sorted_keys = sorted(cars.keys())
 
     for key in sorted_keys:
@@ -63,31 +95,45 @@ def print_sorted_cars(cars):
 def search_car(cars):
     print("\nПошук автомобіля за потужністю")
 
-    try:
-        min_power = float(
-            input("Введіть мінімальну потужність автомобіля: ")
+    while True:
+        try:
+            min_power = float(
+                input(
+                    "Введіть мінімальну потужність автомобіля: "
+                )
+            )
+            break
+
+        except ValueError:
+            print(
+                "Помилка: потрібно вводити лише число! "
+                "Спробуйте ще раз."
+            )
+
+    found = False
+
+    for car in cars:
+        if cars[car][0] >= min_power:
+            print(
+                car,
+                "Потужність:", cars[car][0],
+                "к. с., Вартість:", cars[car][1], "$"
+            )
+            found = True
+
+    if not found:
+        print(
+            "Автомобілів із такою потужністю не знайдено."
         )
 
-        found = False
 
-        for car in cars:
-            if cars[car][0] >= min_power:
-                print(
-                    car,
-                    "Потужність:", cars[car][0],
-                    "к. с., Вартість:", cars[car][1], "$"
-                )
-                found = True
-
-        if not found:
-            print("Автомобілів із такою потужністю не знайдено.")
-
-    except ValueError:
-        print("Помилка: потрібно вводити лише число!")
-
-
+# Підрахунок загальної вартості автомобілів
+# з потужністю більше 100 к. с.
 def calc_powerful_cars_total(cars):
-    print("\nЗагальна вартість авто з двигуном > 100 к.с.")
+    print(
+        "\nЗагальна вартість авто "
+        "з двигуном > 100 к.с."
+    )
 
     total_price = 0
 
@@ -98,9 +144,13 @@ def calc_powerful_cars_total(cars):
         if power > 100:
             total_price += price
 
-    print(f"Сумарна вартість таких авто: {total_price} $")
+    print(
+        f"Сумарна вартість таких авто: "
+        f"{total_price} $"
+    )
 
 
+# Головне меню
 while True:
     print("\nГОЛОВНЕ МЕНЮ")
     print("1. Вивести всі авто")
