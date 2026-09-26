@@ -23,15 +23,20 @@ def print_cars(cars):
             "к. с., Вартість:", cars[car][1], "$"
         )
 
-
+# Додано захист від помилок: перевірка на введення тексту замість чисел
 def add_cars(cars):
     print("\nДодавання авто:")
     name = input("Введіть назву авто: ")
-    power = float(input("Введіть потужність (к. с.): "))
-    price = float(input("Введіть вартість ($): "))
 
-    cars[name] = [power, price]
-    print("Запис успішно додано")
+    while True:
+        try:
+            power = float(input("Введіть потужність (к. с.): "))
+            price = float(input("Введіть вартість ($): "))
+            cars[name] = [power, price]
+            print("Запис успішно додано")
+            break
+        except ValueError:
+            print("Помилка: потрібно вводити лише числа! Спробуйте ще раз.")
 
 
 def delete_cars(cars):
