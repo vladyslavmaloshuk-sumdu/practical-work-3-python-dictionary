@@ -34,15 +34,36 @@ def add_cars(cars):
     print("Запис успішно додано")
 
 
+#Додано явну перевірку наявності ключа перед видаленням та пошук без урахування регістру
+#Додано .strip() для очищення від пробілів
 def delete_cars(cars):
     print("\nВидалення авто:")
-    name = input("Введіть назву авто для видалення: ")
+    name = input("Введіть назву авто для видалення: ").strip()
 
-    try:
+    if not name:
+        print("ПОМИЛКА: Назва авто не може бути порожньою!")
+        return
+
+    #Спроба видалити за точним збігом
+    if name in cars:
         del cars[name]
-        print(f"Автомобіль {name} видалено зі словника")
-    except KeyError:
-        print(f"ПОМИЛКА: Автомобіля з назвою {name} не знайдено в базі!")
+        print(f"Автомобіль '{name}' успішно видалено зі словника.")
+        return
+
+    #Пошук без урахування регістру
+    matched_key = None
+    for car_key in cars:
+        if car_key.lower() == name.lower():
+            matched_key = car_key
+            break
+
+    if matched_key:
+        del cars[matched_key]
+        print(
+            f"Автомобіль '{matched_key}' успішно знайдено та видалено зі словника."
+        )
+    else:
+        print(f"ПОМИЛКА: Автомобіля з назвою '{name}' не знайдено в базі!")
 
 
 def print_sorted_cars(cars):
