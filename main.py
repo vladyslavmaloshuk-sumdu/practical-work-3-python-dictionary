@@ -1,5 +1,3 @@
-from random import choice
-
 cars = {
     "Toyota Camry": [180, 25000],
     "Daewo Lanos": [86, 3500],
@@ -23,7 +21,8 @@ def print_cars(cars):
             "к. с., Вартість:", cars[car][1], "$"
         )
 
-# Додано захист від помилок: перевірка на введення тексту замість чисел
+
+# Додано захист від помилок під час введення потужності та ціни
 def add_cars(cars):
     print("\nДодавання авто:")
     name = input("Введіть назву авто: ")
@@ -32,9 +31,11 @@ def add_cars(cars):
         try:
             power = float(input("Введіть потужність (к. с.): "))
             price = float(input("Введіть вартість ($): "))
+
             cars[name] = [power, price]
             print("Запис успішно додано")
             break
+
         except ValueError:
             print("Помилка: потрібно вводити лише числа! Спробуйте ще раз.")
 
@@ -61,23 +62,28 @@ def print_sorted_cars(cars):
 # Пошук автомобілів за потужністю
 def search_car(cars):
     print("\nПошук автомобіля за потужністю")
-    min_power = float(
-        input("Введіть мінімальну потужність автомобіля: ")
-    )
 
-    found = False
+    try:
+        min_power = float(
+            input("Введіть мінімальну потужність автомобіля: ")
+        )
 
-    for car in cars:
-        if cars[car][0] >= min_power:
-            print(
-                car,
-                "Потужність:", cars[car][0],
-                "к. с., Вартість:", cars[car][1], "$"
-            )
-            found = True
+        found = False
 
-    if not found:
-        print("Автомобілів із такою потужністю не знайдено.")
+        for car in cars:
+            if cars[car][0] >= min_power:
+                print(
+                    car,
+                    "Потужність:", cars[car][0],
+                    "к. с., Вартість:", cars[car][1], "$"
+                )
+                found = True
+
+        if not found:
+            print("Автомобілів із такою потужністю не знайдено.")
+
+    except ValueError:
+        print("Помилка: потрібно вводити лише число!")
 
 
 def calc_powerful_cars_total(cars):
