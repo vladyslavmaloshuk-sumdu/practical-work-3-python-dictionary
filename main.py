@@ -1,5 +1,3 @@
-from random import choice
-
 cars = {
     "Toyota Camry": [180, 25000],
     "Daewo Lanos": [86, 3500],
@@ -14,8 +12,10 @@ cars = {
 }
 
 
+# Виведення всіх автомобілів
 def print_cars(cars):
     print("\nСписок усіх автомобілів")
+
     for car in cars:
         print(
             car,
@@ -24,34 +24,44 @@ def print_cars(cars):
         )
 
 
+# Додавання нового автомобіля
 def add_cars(cars):
     print("\nДодавання авто:")
     name = input("Введіть назву авто: ")
-    power = float(input("Введіть потужність (к. с.): "))
-    price = float(input("Введіть вартість ($): "))
 
-    cars[name] = [power, price]
-    print("Запис успішно додано")
+    while True:
+        try:
+            power = float(input("Введіть потужність (к. с.): "))
+            price = float(input("Введіть вартість ($): "))
+
+            cars[name] = [power, price]
+            print("Запис успішно додано")
+            break
+
+        except ValueError:
+            print(
+                "Помилка: потрібно вводити лише числа! "
+                "Спробуйте ще раз."
+            )
 
 
-#Додано явну перевірку наявності ключа перед видаленням та пошук без урахування регістру.
-#Додано .strip() для очищення від пробілів.
+# Видалення автомобіля
+# Додано перевірку порожнього введення,
+# очищення пробілів та пошук без урахування регістру.
 def delete_cars(cars):
     print("\nВидалення авто:")
-    name = input("Введіть назву авто для видалення: ").strip()
+
+    name = input(
+        "Введіть назву авто для видалення: "
+    ).strip()
 
     if not name:
         print("ПОМИЛКА: Назва авто не може бути порожньою!")
         return
 
-    #Спроба видалити за точним збігом
-    if name in cars:
-        del cars[name]
-        print(f"Автомобіль '{name}' успішно видалено зі словника.")
-        return
-
-    #Пошук без урахування регістру
+    # Пошук без урахування регістру
     matched_key = None
+
     for car_key in cars:
         if car_key.lower() == name.lower():
             matched_key = car_key
@@ -59,15 +69,22 @@ def delete_cars(cars):
 
     if matched_key:
         del cars[matched_key]
+
         print(
-            f"Автомобіль '{matched_key}' успішно знайдено та видалено зі словника."
+            f"Автомобіль '{matched_key}' "
+            "успішно знайдено та видалено зі словника."
         )
     else:
-        print(f"ПОМИЛКА: Автомобіля з назвою '{name}' не знайдено в базі!")
+        print(
+            f"ПОМИЛКА: Автомобіля з назвою "
+            f"'{name}' не знайдено в базі!"
+        )
 
 
+# Виведення автомобілів у відсортованому порядку
 def print_sorted_cars(cars):
     print("\nВідсортований список автомобілів (за алфавітом):")
+
     sorted_keys = sorted(cars.keys())
 
     for key in sorted_keys:
@@ -77,9 +94,21 @@ def print_sorted_cars(cars):
 # Пошук автомобілів за потужністю
 def search_car(cars):
     print("\nПошук автомобіля за потужністю")
-    min_power = float(
-        input("Введіть мінімальну потужність автомобіля: ")
-    )
+
+    while True:
+        try:
+            min_power = float(
+                input(
+                    "Введіть мінімальну потужність автомобіля: "
+                )
+            )
+            break
+
+        except ValueError:
+            print(
+                "Помилка: потрібно вводити лише число! "
+                "Спробуйте ще раз."
+            )
 
     found = False
 
@@ -93,11 +122,18 @@ def search_car(cars):
             found = True
 
     if not found:
-        print("Автомобілів із такою потужністю не знайдено.")
+        print(
+            "Автомобілів із такою потужністю не знайдено."
+        )
 
 
+# Підрахунок загальної вартості автомобілів
+# з потужністю більше 100 к. с.
 def calc_powerful_cars_total(cars):
-    print("\nЗагальна вартість авто з двигуном > 100 к.с.")
+    print(
+        "\nЗагальна вартість авто "
+        "з двигуном > 100 к.с."
+    )
 
     total_price = 0
 
@@ -108,9 +144,13 @@ def calc_powerful_cars_total(cars):
         if power > 100:
             total_price += price
 
-    print(f"Сумарна вартість таких авто: {total_price} $")
+    print(
+        f"Сумарна вартість таких авто: "
+        f"{total_price} $"
+    )
 
 
+# Головне меню
 while True:
     print("\nГОЛОВНЕ МЕНЮ")
     print("1. Вивести всі авто")
